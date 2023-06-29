@@ -1,0 +1,16 @@
+{
+  "name": "BoilerPlate",
+  "uuid": "3f363bec-07b3-4fec-974c-1c666e81a5eb",
+  "creator": {
+    "version": "3.7.3"
+  },
+  "main": "watcher.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node watcher.js"
+  },
+  "dependencies": {
+    "curl": "^0.1.4",
+    "watch-fs": "^0.0.7"
+  }
+}

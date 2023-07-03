@@ -2,34 +2,35 @@ import { Prefab, Node, isValid, warn, _decorator, instantiate, resources, direct
 
 const { ccclass } = _decorator;
 import PopupBase from "../../components/popup/PopupBase";
+import { ASSET_CACHE_MODE, PopupParams, PopupStruct } from "../constants/Popup";
 /**
  * Pop -up cache mode
  */
-enum CacheMode {
-  /** 一Secondary (immediately destroy nodes, prefabricated body resources are released immediately） */
-  Once = 1,
-  /** Normal (destroy the node immediately, but cache prefabricated resources） */
-  Normal,
-  /** Frequent (only close the node, and cache prefabricated body resources) */
-  Frequent,
-}
+// export enum CacheMode {
+//   /** 一Secondary (immediately destroy nodes, prefabricated body resources are released immediately） */
+//   Once = 1,
+//   /** Normal (destroy the node immediately, but cache prefabricated resources） */
+//   Normal,
+//   /** Frequent (only close the node, and cache prefabricated body resources) */
+//   Frequent,
+// }
 
 /**
- * 弹窗请求结果类型
+ * Pop -up request results type 
  */
 enum ShowResultType {
   /** Show successfully (closed） */
   Done = 1,
-  /** 展示失败（加载失败） */
+  /** Show failed (failed to load） */
   Failed,
-  /** 等待中（已加入等待队列） */
+  /** Waiting (have joined the waiting queue） */
   Waiting,
 }
 
 /**ß
  * Popping window manager
  * @author Chandan Krishnani
- * @version 20220121
+ * @version 0.0.1
  */
 
 @ccclass("PopupManager")
@@ -99,7 +100,7 @@ export class PopupManager {
    * Pop -up cache mode
    */
   public static get CacheMode() {
-    return CacheMode;
+    return ASSET_CACHE_MODE;
   }
 
   /**
@@ -143,13 +144,13 @@ export class PopupManager {
    * PopupManager.show('prefabs/MyPopup', options, params);
    */
   public static show<Options>(
-    path: string,
-    options?: Options,
-    params?: PopupParamsType
+    popupSetting: PopupStruct,
+    options?: Options
+    // params?: PopupParamsType
   ): Promise<ShowResultType> {
     return new Promise(async (res) => {
       // Analysis processing parameters
-      params = this.parseParams(params);
+      let params: PopupParams = popupSetting.params;
       // At present, there are already pop -up windows in the display to join the waiting queue
       if (this._current || this.locked) {
         // Whether to show immediately
@@ -159,27 +160,27 @@ export class PopupManager {
           await this.suspend();
         } else {
           // Push the request into the waiting queue
-          this.push(path, options, params);
+          this.push(popupSetting.path, options, params);
           res(ShowResultType.Waiting);
           return;
         }
       }
       // Save as the current pop -up window, prevent new pop -up requests
-      this._current = { path, options, params };
+      this._current = { path: popupSetting.path, options, params };
       // ß
-      let node = this.getNodeFromCache(path);
+      let node = this.getNodeFromCache(popupSetting.path);
       // No in the cache, dynamically load prefabricated body resources
       if (!node || !isValid(node)) {
         // Start the callback
         this.loadStartCallback && this.loadStartCallback();
         // Waiting for loading
-        const prefab = await this.load(path);
+        const prefab = await this.load(popupSetting.path);
         // Complete the callback
         this.loadFinishCallback && this.loadFinishCallback();
         // Load failure (generally caused by path errors)
 
         if (!isValid(prefab)) {
-          warn("[PopupManager]", "Popping window load failed", path);
+          warn("[PopupManager]", "Popping window load failed", popupSetting.path);
           this._current = null;
           res(ShowResultType.Failed);
           return;
@@ -193,7 +194,7 @@ export class PopupManager {
       const popup = node.getComponent(PopupBase);
 
       if (!popup) {
-        warn("[PopupManager]", "No pop -up component was found", path);
+        warn("[PopupManager]", "No pop -up component was found", popupSetting.path);
         this._current = null;
         res(ShowResultType.Failed);
         return;
@@ -216,7 +217,7 @@ export class PopupManager {
         // Whether to lock
         this.locked = this._suspended.length > 0 || this._queue.length > 0;
         // Recycle
-        this.recycle(path, node, params.mode);
+        this.recycle(popupSetting.path, node, params.mode);
         this._current = null;
         res(ShowResultType.Done);
         // Delay for a while
@@ -304,7 +305,11 @@ export class PopupManager {
       return;
     }
     // Load and display
-    this.show(request.path, request.options, request.params);
+    let settings: PopupStruct = {
+      path: request.path,
+      params: request.params,
+    };
+    this.show(settings, request.options);
   }
 
   /**
@@ -316,7 +321,11 @@ export class PopupManager {
   private static push<Options>(path: string, options?: Options, params?: PopupParamsType) {
     // Display directly
     if (!this._current && !this.locked) {
-      this.show(path, options, params);
+      let settings: PopupStruct = {
+        path: path,
+        params: params,
+      };
+      this.show(settings, options);
       return;
     }
     // Join the queue
@@ -349,10 +358,10 @@ export class PopupManager {
    * @param Node pop -up window node
    * @param Mode cache mode
    */
-  private static recycle(path: string, node: Node, mode: CacheMode) {
+  private static recycle(path: string, node: Node, mode: ASSET_CACHE_MODE) {
     switch (mode) {
       // One -time
-      case CacheMode.Once: {
+      case ASSET_CACHE_MODE.Once: {
         this._nodeCache.delete(path);
         node.destroy();
         // freed
@@ -360,13 +369,13 @@ export class PopupManager {
         break;
       }
       // normal
-      case CacheMode.Normal: {
+      case ASSET_CACHE_MODE.Normal: {
         this._nodeCache.delete(path);
         node.destroy();
         break;
       }
       // frequently
-      case CacheMode.Frequent: {
+      case ASSET_CACHE_MODE.Frequent: {
         node.removeFromParent();
         this._nodeCache.set(path, node);
         break;
@@ -393,8 +402,6 @@ export class PopupManager {
           prefabMap.delete(path);
         }
       }
-
-      console.log("Starting loading prefab");
 
       // Dynamic load
       resources.load(path, (error: Error, prefab: Prefab) => {
@@ -455,7 +462,7 @@ export class PopupManager {
     }
     // Cache mode
     if (params.mode == undefined) {
-      params.mode = CacheMode.Normal;
+      params.mode = ASSET_CACHE_MODE.Normal;
     }
     // priority
     if (params.priority == undefined) {
@@ -474,7 +481,7 @@ export class PopupManager {
  */
 class PopupParamsType {
   /** Cache mode */
-  mode?: CacheMode = CacheMode.Normal;
+  mode?: ASSET_CACHE_MODE = ASSET_CACHE_MODE.Normal;
   /** Priority (priority priority display) */
   priority?: number = 0;
   /** Show immediately (will hang the pop -up window in the current display) */

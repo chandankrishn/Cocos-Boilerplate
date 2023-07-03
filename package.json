@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "curl": "^0.1.4",
+    "socket.io-client": "^4.7.1",
     "watch-fs": "^0.0.7"
   }
 }

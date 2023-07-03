@@ -5,9 +5,5 @@ const { ccclass, property } = _decorator;
 export class PopupOverlay extends Component {
   start() {}
 
-  private openPopup() {
-    this.scheduleOnce;
-  }
-
   update(deltaTime: number) {}
 }

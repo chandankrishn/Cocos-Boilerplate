@@ -1,6 +1,7 @@
 import { _decorator, Component, Label, Node } from "cc";
 import PopupBase from "./PopupBase";
 import { PopupManager } from "../../script/managers/PopupManager";
+import { POPUPS } from "../../script/constants/Popup";
 const { ccclass, property } = _decorator;
 
 @ccclass("Popup")
@@ -38,12 +39,7 @@ export class Popup extends PopupBase {
     this.unregisterEvent();
   }
 
-  protected registerEvent() {
-    // this.closeBtn.on(Node.EventType.TOUCH_END, this.onCloseBtnClick, this);
-    // this.normalBtn.on(Node.EventType.TOUCH_END, this.onNormalBtnClick, this);
-    // this.priorityBtn.on(Node.EventType.TOUCH_END, this.onPriorityBtnClick, this);
-    // this.immediatelyBtn.on(Node.EventType.TOUCH_END, this.onImmediatelyBtnClick, this);
-  }
+  protected registerEvent() {}
 
   protected unregisterEvent() {}
 
@@ -53,7 +49,7 @@ export class Popup extends PopupBase {
   }
 
   protected updateFlag() {
-    this.newFlag = (Math.random() * 10000).toFixed(0).padStart(5, "0");
+    // this.newFlag = (Math.random() * 10000).toFixed(0).padStart(5, "0");
     this.newFlagLabel.string = this.newFlag;
   }
 
@@ -62,28 +58,19 @@ export class Popup extends PopupBase {
   }
 
   protected onNormalBtnClick() {
-    const params = {
-      mode: PopupManager.CacheMode.Normal,
-      priority: 0,
-    };
-    PopupManager.show(Popup.path, this.newFlag, params);
+    this.newFlag = "Normal Popup";
+    PopupManager.show(POPUPS.TEST1, this.newFlag);
     this.updateFlag();
   }
 
   protected onPriorityBtnClick() {
-    const params = {
-      mode: PopupManager.CacheMode.Normal,
-      priority: -1,
-    };
-    PopupManager.show(Popup.path, this.newFlag, params);
+    this.newFlag = "Priority high ";
+    PopupManager.show(POPUPS.SETTINGS, this.newFlag);
     this.updateFlag();
   }
 
   protected onImmediatelyBtnClick() {
-    const params = {
-      mode: PopupManager.CacheMode.Frequent,
-      immediately: true,
-    };
-    PopupManager.show(Popup.path, this.newFlag, params);
+    this.newFlag = " Immediately open";
+    PopupManager.show(POPUPS.TEST3, this.newFlag);
   }
 }

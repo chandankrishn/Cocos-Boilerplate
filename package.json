@@ -1,17 +1,26 @@
 {
-  "name": "BoilerPlate",
-  "uuid": "3f363bec-07b3-4fec-974c-1c666e81a5eb",
-  "creator": {
-    "version": "3.7.3"
-  },
-  "main": "watcher.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node watcher.js"
-  },
-  "dependencies": {
-    "curl": "^0.1.4",
-    "socket.io-client": "^4.7.1",
-    "watch-fs": "^0.0.7"
-  }
+    "name": "boilerplate",
+    "uuid": "3f363bec-07b3-4fec-974c-1c666e81a5eb",
+    "creator": {
+        "version": "3.7.3"
+    },
+    "main": "watcher.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "node watcher.js"
+    },
+    "dependencies": {
+        "curl": "^0.1.4",
+        "socket.io-client": "^4.7.1",
+        "watch-fs": "^0.0.7"
+    },
+    "devDependencies": {
+        "@typescript-eslint/eslint-plugin": "^5.61.0",
+        "eslint": "^8.44.0",
+        "eslint-config-standard-with-typescript": "^36.0.0",
+        "eslint-plugin-import": "^2.27.5",
+        "eslint-plugin-n": "^15.7.0",
+        "eslint-plugin-promise": "^6.1.1",
+        "typescript": "^5.1.6"
+    }
 }

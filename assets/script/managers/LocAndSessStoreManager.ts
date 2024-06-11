@@ -17,7 +17,7 @@ export class LocAndSessStoreManager {
     //Data cache so that no need to access localstorage again and again
     private _dataCache: Map<string, string> = new Map<string, string>();
 
-    public static getInstance() {
+    public static get Instance() {
         if (!LocAndSessStoreManager._instance) {
             LocAndSessStoreManager._instance = new LocAndSessStoreManager();
         }

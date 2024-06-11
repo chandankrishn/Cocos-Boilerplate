@@ -66,7 +66,7 @@ export class MessageCenter extends Component {
      * @param object Message object node
      */
     private isObjectHasRegister(msg: string, object: Node | object) {
-        let item: msgItem[] = this._Que[msg];
+        let item: msgItem[] = this._Que[msg]; //chandan
         let len = item.length;
         for (let i = len - 1; i >= 0; i--) {
             if (item[i].object === object) {

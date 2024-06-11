@@ -1,0 +1,157 @@
+CCEffect %{
+  techniques:
+  - passes:
+    - vert: sprite-vs:vert
+      frag: sprite-fs:frag
+      depthStencilState:
+        depthTest: false
+        depthWrite: false
+      blendState:
+        targets:
+        - blend: true
+          blendSrc: src_alpha
+          blendDst: one_minus_src_alpha
+          blendDstAlpha: one_minus_src_alpha
+      rasterizerState:
+        cullMode: none
+      properties:
+        # 自定义参数
+        center: {
+          value: [0.5, 0.5], editor: { tooltip: "光圈起点" }
+        }
+        size: { 
+            value: [500.0, 500.0], editor: { tooltip: '节点尺寸' } 
+        }
+        width: {
+          value: 0.01, editor: { tooltip: "光圈模糊程度" }
+        }
+        height: {
+          value: 0.5, editor: { tooltip: "光圈半径" }
+        }
+        round: {
+          value: 0.1, editor: { tooltip: "光圈起点" }
+        }
+        feather: {
+          value: 0.05, editor: { tooltip: "光圈起点" }
+        }
+}%
+
+
+CCProgram sprite-vs %{
+  precision highp float;
+  #include <builtin/uniforms/cc-global>
+  #if USE_LOCAL
+    #include <builtin/uniforms/cc-local>
+  #endif
+
+  in vec3 a_position;
+  in vec2 a_texCoord;
+  in vec4 a_color;
+
+  out vec4 v_color;
+  out vec2 v_uv0;
+
+  #if USE_TEXTURE
+    in vec2 a_uv0;
+  #endif
+
+  vec4 vert () {
+    vec4 pos = vec4(a_position, 1);
+
+    #if USE_LOCAL
+      pos = cc_matWorld * pos;
+    #endif
+
+    #if USE_PIXEL_ALIGNMENT
+      pos = cc_matView * pos;
+      pos.xyz = floor(pos.xyz);
+      pos = cc_matProj * pos;
+    #else
+      pos = cc_matViewProj * pos;
+    #endif
+
+    #if USE_TEXTURE
+      v_uv0 = a_uv0;
+    #endif
+
+    v_color = a_color;
+    v_uv0 = a_texCoord;
+
+    return pos;
+  }
+}%
+
+CCProgram sprite-fs %{
+  precision highp float;
+  #include <builtin/internal/embedded-alpha>
+  #include <builtin/internal/alpha-test>
+
+  in vec2 v_uv0;
+  in vec4 v_color;
+
+  #if USE_TEXTURE
+    #pragma builtin(local)
+    layout(set = 2, binding = 11) uniform sampler2D cc_spriteTexture;
+  #endif
+
+  uniform ARGS{
+    vec2 center;
+    vec2 size;
+    float width;
+    float height;
+    float round;
+    float feather;
+  };
+
+  vec4 frag () {
+    
+    vec4 color = vec4(1, 1, 1, 1);
+    color *= CCSampleWithAlphaSeparated(cc_spriteTexture, v_uv0);
+    color *= v_color;
+    
+    ALPHA_TEST(color);
+    // 边缘处理
+    float x = v_uv0.x;
+    float y = v_uv0.y;
+    float ratio = size.x / size.y;
+    float minX = center.x - (width / 2.0);
+    float maxX = center.x + (width / 2.0);
+    float minY = center.y - (height * ratio / 2.0);
+    float maxY = center.y + (height * ratio / 2.0);
+    if (x >= minX && x <= maxX && y >= minY && y <= maxY) {
+      if (round == 0.0) discard; // 没有圆角则直接丢弃
+      // 圆角处理
+      float roundY = round * ratio;
+      vec2 vertex;
+      if (x <= minX + round) {
+        if (y <= minY + roundY) {
+          vertex = vec2(minX + round, (minY + roundY) / ratio); // 左上角
+        } else if (y >= maxY - roundY) {
+          vertex = vec2(minX + round, (maxY - roundY) / ratio); // 左下角
+        } else {
+          vertex = vec2(minX + round, y / ratio); // 左中
+        }
+      } else if (x >= maxX - round) {
+        if (y <= minY + roundY){
+          vertex = vec2(maxX - round, (minY + roundY) / ratio); // 右上角
+        } else if (y >= maxY - roundY) {
+          vertex = vec2(maxX - round, (maxY - roundY) / ratio); // 右下角
+        } else {
+          vertex = vec2(maxX - round, y / ratio); // 右中
+        }
+      } else if (y <= minY + roundY) {
+        vertex = vec2(x, (minY + roundY) / ratio); // 上中
+      } else if (y >= maxY - roundY) {
+        vertex = vec2(x, (maxY - roundY) / ratio); // 下中
+      } else {
+        discard; // 中间
+      }
+      float dis = distance(vec2(x, y / ratio), vertex);
+      color.a = smoothstep(round - feather, round, dis) * color.a;
+    }
+    
+    color.a *= v_color.a;
+
+    return color;
+  }
+}%

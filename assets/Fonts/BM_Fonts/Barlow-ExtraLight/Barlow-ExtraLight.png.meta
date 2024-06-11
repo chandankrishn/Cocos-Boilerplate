@@ -1,0 +1,134 @@
+{
+  "ver": "1.0.26",
+  "importer": "image",
+  "imported": true,
+  "uuid": "eb03d5e3-90a9-4532-93d5-7745553e40ce",
+  "files": [
+    ".json",
+    ".png"
+  ],
+  "subMetas": {
+    "6c48a": {
+      "importer": "texture",
+      "uuid": "eb03d5e3-90a9-4532-93d5-7745553e40ce@6c48a",
+      "displayName": "Barlow-ExtraLight",
+      "id": "6c48a",
+      "name": "texture",
+      "userData": {
+        "wrapModeS": "clamp-to-edge",
+        "wrapModeT": "clamp-to-edge",
+        "imageUuidOrDatabaseUri": "eb03d5e3-90a9-4532-93d5-7745553e40ce",
+        "isUuid": true,
+        "visible": false,
+        "minfilter": "linear",
+        "magfilter": "linear",
+        "mipfilter": "none",
+        "anisotropy": 0
+      },
+      "ver": "1.0.22",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "f9941": {
+      "importer": "sprite-frame",
+      "uuid": "eb03d5e3-90a9-4532-93d5-7745553e40ce@f9941",
+      "displayName": "Barlow-ExtraLight",
+      "id": "f9941",
+      "name": "spriteFrame",
+      "userData": {
+        "trimType": "auto",
+        "trimThreshold": 1,
+        "rotated": false,
+        "offsetX": 0,
+        "offsetY": 0,
+        "trimX": 1,
+        "trimY": 1,
+        "width": 374,
+        "height": 375,
+        "rawWidth": 376,
+        "rawHeight": 377,
+        "borderTop": 0,
+        "borderBottom": 0,
+        "borderLeft": 0,
+        "borderRight": 0,
+        "packable": true,
+        "pixelsToUnit": 100,
+        "pivotX": 0.5,
+        "pivotY": 0.5,
+        "meshType": 0,
+        "vertices": {
+          "rawPosition": [
+            -187,
+            -187.5,
+            0,
+            187,
+            -187.5,
+            0,
+            -187,
+            187.5,
+            0,
+            187,
+            187.5,
+            0
+          ],
+          "indexes": [
+            0,
+            1,
+            2,
+            2,
+            1,
+            3
+          ],
+          "uv": [
+            1,
+            376,
+            375,
+            376,
+            1,
+            1,
+            375,
+            1
+          ],
+          "nuv": [
+            0.0026595744680851063,
+            0.002652519893899204,
+            0.9973404255319149,
+            0.002652519893899204,
+            0.0026595744680851063,
+            0.9973474801061007,
+            0.9973404255319149,
+            0.9973474801061007
+          ],
+          "minPos": [
+            -187,
+            -187.5,
+            0
+          ],
+          "maxPos": [
+            187,
+            187.5,
+            0
+          ]
+        },
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "eb03d5e3-90a9-4532-93d5-7745553e40ce@6c48a",
+        "atlasUuid": ""
+      },
+      "ver": "1.0.12",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    }
+  },
+  "userData": {
+    "type": "sprite-frame",
+    "fixAlphaTransparencyArtifacts": true,
+    "hasAlpha": true,
+    "redirect": "eb03d5e3-90a9-4532-93d5-7745553e40ce@f9941"
+  }
+}

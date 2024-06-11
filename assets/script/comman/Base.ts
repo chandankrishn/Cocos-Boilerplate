@@ -1,14 +1,14 @@
-import { _decorator, Component, Node } from "cc";
+import { _decorator, Component } from "cc";
 import { ResourcesManager } from "../managers/ResourcesManager";
 const { ccclass, property } = _decorator;
 
 @ccclass("Base")
 export class Base extends Component {
-  start() {}
+    start() {}
 
-  protected onDestroy(): void {
-    ResourcesManager.releaseNodeCache();
-  }
+    protected onDestroy(): void {
+        ResourcesManager.releaseNodeCache();
+    }
 
-  update(deltaTime: number) {}
+    update(deltaTime: number) {}
 }

@@ -1,14 +1,22 @@
-import { _decorator, Component, Node } from 'cc';
-const { ccclass, property } = _decorator;
+import { PersistNode } from "../comman/PersistNode";
 
-@ccclass('GameManager')
-export class GameManager extends Component {
-    start() {
+export class GameManager {
+    private static _instance: GameManager | null = null;
 
+    private persistNodeRef: PersistNode = null!
+    public static get Instance() {
+        if (!GameManager._instance) {
+            GameManager._instance = new GameManager();
+        }
+        return GameManager._instance;
     }
 
-    update(deltaTime: number) {
-        
+
+    set PersistNodeRef(ref: PersistNode) {
+        this.persistNodeRef = ref;
+    }
+
+    get PersistNodeRef(): PersistNode {
+        return this.persistNodeRef;
     }
 }
-

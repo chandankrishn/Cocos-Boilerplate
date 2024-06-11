@@ -36,6 +36,31 @@ export const POPUPS: Record<string, PopupStruct> = {
             immediately: false,
         },
     },
+    SIGNUP: {
+        path: "prefabs/authentication/SignupPopUp",
+        params: {
+            mode: ASSET_CACHE_MODE.Frequent,
+            priority: POPUP_PRIORITY.HIGH,
+            immediately: false,
+        },
+    },
+    LOGIN: {
+        path: "prefabs/authentication/LoginPopUp",
+        params: {
+            mode: ASSET_CACHE_MODE.Frequent,
+            priority: POPUP_PRIORITY.HIGH,
+            immediately: false,
+        },
+    },
+
+    FORGOT_PASSWORD: {
+        path: "prefabs/authentication/ForgotPassPopUp",
+        params: {
+            mode: ASSET_CACHE_MODE.Frequent,
+            priority: POPUP_PRIORITY.HIGH,
+            immediately: true,
+        },
+    },
     TEST1: {
         path: "prefabs/settingsPopup-3",
         params: {

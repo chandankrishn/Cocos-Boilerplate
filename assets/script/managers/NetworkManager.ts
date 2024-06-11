@@ -66,7 +66,7 @@ export class NetworkManager {
         if (requireToken)
             xhr.setRequestHeader(
                 "authorization",
-                LocAndSessStoreManager?.getInstance()?.getData(
+                LocAndSessStoreManager?.Instance?.getData(
                     SESSION_STORAGE.TOKEN
                 )
             );
@@ -106,7 +106,7 @@ export class NetworkManager {
         if (requireToken)
             xhr.setRequestHeader(
                 "Authorization",
-                LocAndSessStoreManager.getInstance().getData(
+                LocAndSessStoreManager.Instance.getData(
                     SESSION_STORAGE.TOKEN
                 )
             );

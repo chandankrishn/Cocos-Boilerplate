@@ -1,0 +1,134 @@
+{
+  "ver": "1.0.26",
+  "importer": "image",
+  "imported": true,
+  "uuid": "de4d150c-3dae-49e2-a893-e1a247ff7370",
+  "files": [
+    ".json",
+    ".png"
+  ],
+  "subMetas": {
+    "6c48a": {
+      "importer": "texture",
+      "uuid": "de4d150c-3dae-49e2-a893-e1a247ff7370@6c48a",
+      "displayName": "Bahnschrift",
+      "id": "6c48a",
+      "name": "texture",
+      "userData": {
+        "wrapModeS": "clamp-to-edge",
+        "wrapModeT": "clamp-to-edge",
+        "imageUuidOrDatabaseUri": "de4d150c-3dae-49e2-a893-e1a247ff7370",
+        "isUuid": true,
+        "visible": false,
+        "minfilter": "linear",
+        "magfilter": "linear",
+        "mipfilter": "none",
+        "anisotropy": 0
+      },
+      "ver": "1.0.22",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    },
+    "f9941": {
+      "importer": "sprite-frame",
+      "uuid": "de4d150c-3dae-49e2-a893-e1a247ff7370@f9941",
+      "displayName": "Bahnschrift",
+      "id": "f9941",
+      "name": "spriteFrame",
+      "userData": {
+        "trimType": "auto",
+        "trimThreshold": 1,
+        "rotated": false,
+        "offsetX": 0,
+        "offsetY": 0,
+        "trimX": 1,
+        "trimY": 1,
+        "width": 404,
+        "height": 397,
+        "rawWidth": 406,
+        "rawHeight": 399,
+        "borderTop": 0,
+        "borderBottom": 0,
+        "borderLeft": 0,
+        "borderRight": 0,
+        "packable": true,
+        "pixelsToUnit": 100,
+        "pivotX": 0.5,
+        "pivotY": 0.5,
+        "meshType": 0,
+        "vertices": {
+          "rawPosition": [
+            -202,
+            -198.5,
+            0,
+            202,
+            -198.5,
+            0,
+            -202,
+            198.5,
+            0,
+            202,
+            198.5,
+            0
+          ],
+          "indexes": [
+            0,
+            1,
+            2,
+            2,
+            1,
+            3
+          ],
+          "uv": [
+            1,
+            398,
+            405,
+            398,
+            1,
+            1,
+            405,
+            1
+          ],
+          "nuv": [
+            0.0024630541871921183,
+            0.002506265664160401,
+            0.9975369458128078,
+            0.002506265664160401,
+            0.0024630541871921183,
+            0.9974937343358395,
+            0.9975369458128078,
+            0.9974937343358395
+          ],
+          "minPos": [
+            -202,
+            -198.5,
+            0
+          ],
+          "maxPos": [
+            202,
+            198.5,
+            0
+          ]
+        },
+        "isUuid": true,
+        "imageUuidOrDatabaseUri": "de4d150c-3dae-49e2-a893-e1a247ff7370@6c48a",
+        "atlasUuid": ""
+      },
+      "ver": "1.0.12",
+      "imported": true,
+      "files": [
+        ".json"
+      ],
+      "subMetas": {}
+    }
+  },
+  "userData": {
+    "fixAlphaTransparencyArtifacts": true,
+    "type": "sprite-frame",
+    "hasAlpha": true,
+    "redirect": "de4d150c-3dae-49e2-a893-e1a247ff7370@f9941"
+  }
+}

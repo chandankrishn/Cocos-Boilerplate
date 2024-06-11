@@ -65,54 +65,56 @@ export class APAspectRatioFitter extends Component {
     }
 
     onSizeChanged() {
-        // if (this.sprite === null) return;
-        // var spriteSize: Size | undefined =
-        //     this.sprite?.spriteFrame?.originalSize;
-        // if (this.sprite.trim) {
-        //     let _rect: Rect | undefined = this.sprite?.spriteFrame?.rect;
-        //     spriteSize = new Size(_rect?.width, _rect?.height);
-        // }
-        // var widthFactor: number | undefined =
-        //     this.node?.parent?.getComponent(UITransform)?.width /
-        //     spriteSize.width;
-        // var heightFactor: number =
-        //     this.node.parent.getComponent(UITransform).height /
-        //     spriteSize.height;
-        // switch (this.fitMode) {
-        //     case APAspectRatioFitType.Envelope:
-        //         var multFactor: number = Math.max(widthFactor, heightFactor);
-        //         this.node.getComponent(UITransform).width =
-        //             spriteSize.width * multFactor;
-        //         this.node.getComponent(UITransform).height =
-        //             spriteSize.height * multFactor;
-        //         break;
-        //     case APAspectRatioFitType.FitVertical:
-        //         this.node.getComponent(UITransform).height =
-        //             this.node.parent.getComponent(UITransform).height;
-        //         this.node.getComponent(UITransform).width =
-        //             spriteSize.width * heightFactor;
-        //         break;
-        //     case APAspectRatioFitType.FitHorizontal:
-        //         this.node.getComponent(UITransform).width =
-        //             this.node.parent.getComponent(UITransform).width;
-        //         this.node.getComponent(UITransform).height =
-        //             spriteSize.height * widthFactor;
-        //         break;
-        //     case APAspectRatioFitType.FitInside:
-        //         var multFactor: number = Math.min(widthFactor, heightFactor);
-        //         this.node?.getComponent(UITransform)?.width =
-        //             spriteSize.width * multFactor;
-        //         this.node.getComponent(UITransform).height =
-        //             spriteSize.height * multFactor;
-        //         break;
-        //     case APAspectRatioFitType.Stretch:
-        //         this.node.getComponent(UITransform).width =
-        //             this.node.parent.getComponent(UITransform).width;
-        //         this.node.getComponent(UITransform).height =
-        //             this.node.parent.getComponent(UITransform).height;
-        //         break;
-        //     default:
-        //         break;
-        // }
+        if (this.sprite === null) return;
+        let spriteSize: Size | undefined =
+            this.sprite?.spriteFrame?.originalSize;
+        if (this.sprite.trim) {
+            let _rect: Rect | undefined = this.sprite?.spriteFrame?.rect;
+            spriteSize = new Size(_rect?.width, _rect?.height);
+        }
+
+        const UiTransform: UITransform | null =
+            this.node.getComponent(UITransform);
+        const ParentUiTransform: UITransform | null | undefined =
+            this.node?.parent?.getComponent(UITransform);
+        if (UiTransform && ParentUiTransform && spriteSize) {
+            var widthFactor: number =
+                ParentUiTransform.width / spriteSize.width;
+
+            var heightFactor: number =
+                ParentUiTransform.height / spriteSize.height;
+            switch (this.fitMode) {
+                case APAspectRatioFitType.Envelope:
+                    var multFactor: number = Math.max(
+                        widthFactor,
+                        heightFactor
+                    );
+                    UiTransform.width = spriteSize.width * multFactor;
+                    UiTransform.height = spriteSize.height * multFactor;
+                    break;
+                case APAspectRatioFitType.FitVertical:
+                    UiTransform.height = ParentUiTransform.height;
+                    UiTransform.width = spriteSize.width * heightFactor;
+                    break;
+                case APAspectRatioFitType.FitHorizontal:
+                    UiTransform.width = ParentUiTransform.width;
+                    UiTransform.height = spriteSize.height * widthFactor;
+                    break;
+                case APAspectRatioFitType.FitInside:
+                    var multFactor: number = Math.min(
+                        widthFactor,
+                        heightFactor
+                    );
+                    UiTransform.width = spriteSize.width * multFactor;
+                    UiTransform.height = spriteSize.height * multFactor;
+                    break;
+                case APAspectRatioFitType.Stretch:
+                    UiTransform.width = ParentUiTransform.width;
+                    UiTransform.height = ParentUiTransform.height;
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 }
